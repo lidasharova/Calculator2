@@ -1,104 +1,261 @@
-* {
+/* Основной фон */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #2E2A47; /* Темно-фиолетовый фон */
+    color: white;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #1c1c3c;
-    color: #e0e0e0;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-}
-
+/* Контейнер */
 .container {
+    width: 80%;
     max-width: 1200px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1D1B30; /* Темно-синий фон */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-header {
+/* Заголовки */
+header h1 {
     text-align: center;
-    margin-bottom: 20px;
+    font-size: 2.5rem;
+    color: #6A5ACD; /* Фиолетовый */
 }
 
-.content {
-    display: flex;
-    gap: 20px;
-}
-
-.left-panel {
-    background-color: #272750;
-    padding: 20px;
-    border-radius: 10px;
-    flex: 1;
-}
-
-.right-panel {
-    background-color: #2b2b5f;
-    padding: 20px;
-    border-radius: 10px;
-    flex: 2;
+/* Разделы */
+section {
+    margin-bottom: 30px;
 }
 
 h2 {
-    margin-bottom: 15px;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #9AE3C4; /* Светло-зеленый */
 }
 
-label {
+/* Форма для добавления расходов */
+.expense-form {
+    background-color: #23234B; /* Темно-синий фон для формы */
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.expense-form label {
+    font-size: 1rem;
+    margin-bottom: 5px;
     display: block;
-    margin: 10px 0 5px;
 }
 
-input, select, button {
+.expense-form select,
+.expense-form input {
     width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
-    border: none;
+    margin: 10px 0;
+    background-color: #2E2A47; /* Темный фон для полей ввода */
+    border: 1px solid #444;
     border-radius: 5px;
+    color: #fff;
+    font-size: 1rem;
 }
 
-button {
-    background-color: #3a7b8e;
+/* Кнопка "Добавить" */
+.expense-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #6A5ACD; /* Фиолетовая кнопка */
     color: white;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #569bb0;
+.expense-form button:hover {
+    background-color: #5A4F9A; /* Более темный фиолетовый при наведении */
+}
+
+/* Кнопки фильтрации */
+.filters button {
+    padding: 12px 20px;
+    background-color: #6A5ACD;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-right: 10px; /* Отступ между кнопками */
+}
+
+.filters button:hover {
+    background-color: #5A4F9A;
+    transform: scale(1.05); /* Легкое увеличение кнопки при наведении */
+}
+
+.filters button:focus {
+    outline: 3px solid #9AE3C4; /* Зеленый контур при фокусе */
+}
+
+/* Отступы вокруг фильтров */
+.filters {
+    margin-bottom: 20px;
+}
+
+/* Список расходов */
+.expense-list {
+    background-color: #23234B;
+    padding: 20px;
+    border-radius: 8px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 20px;
 }
 
-th, td {
-    padding: 10px;
-    border-bottom: 1px solid #444;
+table th, table td {
+    padding: 12px;
     text-align: left;
 }
 
-th {
-    background-color: #3a3a6b;
+table th {
+    background-color: #3E3B65; /* Темно-синий для заголовков */
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+table td {
+    background-color: #2E2A47; /* Темно-синий для строк */
 }
 
-ul li {
-    margin: 10px 0;
+table button {
+    padding: 8px 15px;
+    background-color: #D9534F; /* Красная кнопка для удаления */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
+table button:hover {
+    background-color: #C9302C; /* Темно-красная кнопка при наведении */
+}
+
+/* Итоги */
 .summary {
-    margin-top: 20px;
-    background-color: #363673;
-    padding: 15px;
-    border-radius: 10px;
+    background-color: #23234B;
+    padding: 20px;
+    border-radius: 8px;
 }
+
+.summary p {
+    font-size: 1.2rem;
+}
+
+#total-expense, #average-expense {
+    font-weight: bold;
+    color: #9AE3C4; /* Светло-зеленый */
+}
+
+/* Стили для поля ввода даты */
+#filter-date {
+    width: 200px;
+    padding: 12px 15px;
+    background-color: #2E2A47; /* Темный фон */
+    color: white;
+    border: 1px solid #444;
+    border-radius: 8px;
+    font-size: 1rem;
+    appearance: none; /* Скрыть стандартный календарь */
+    -webkit-appearance: none; /* Для Safari */
+    -moz-appearance: none; /* Для Firefox */
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Кастомный стиль для иконки календаря */
+#filter-date::after {
+    content: '📅'; /* Эмодзи календаря как иконка */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    pointer-events: none;
+}
+
+/* Фокус на поле ввода даты */
+#filter-date:focus {
+    border-color: #9AE3C4; /* Светло-зеленый контур при фокусе */
+    background-color: #3E3B65; /* Светлый фон при фокусе */
+    outline: none;
+}
+
+/* Изменения при наведении на поле ввода даты */
+#filter-date:hover {
+    background-color: #3E3B65; /* Слегка светлее при наведении */
+}
+
+/* Добавляем отступы и красивое оформление для контейнера с фильтром */
+.filter-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+}
+
+.filter-section input[type="date"] {
+    flex: 1;
+    width: auto; /* Убираем растягивание на всю ширину */
+}
+
+/* Стили для кнопки фильтра */
+#filter-btn {
+    padding: 12px 20px;
+    background-color: #6A5ACD; /* Фиолетовая кнопка */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#filter-btn:hover {
+    background-color: #5A4F9A; /* Более темный фиолетовый при наведении */
+    transform: scale(1.05); /* Легкое увеличение кнопки при наведении */
+}
+
+#filter-btn:focus {
+    outline: 3px solid #9AE3C4; /* Зеленый контур при фокусе */
+}
+
+/* Стили для контейнеров фильтров */
+.filter-date-container, .filter-group-container {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Стили для группы кнопок */
+.filter-date-container button, .filter-group-container button {
+    padding: 12px 20px;
+    background-color: #6A5ACD; /* Фиолетовая кнопка */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.filter-date-container button:hover, .filter-group-container button:hover {
+    background-color: #5A4F9A;
+    transform: scale(1.05); /* Легкое увеличение кнопки при наведении */
+}
+
+.filter-date-contai

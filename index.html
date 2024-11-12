@@ -12,74 +12,70 @@
         <h1>Калькулятор расходов</h1>
     </header>
 
-    <div class="content">
-        <!-- Левая часть: Форма и фильтры -->
-        <aside class="left-panel">
-            <!-- Форма для добавления расходов -->
-            <section class="expense-form">
-                <form id="expense-form">
-                    <h2>Добавить расход</h2>
-                    <label for="category">Категория:</label>
-                    <select id="category">
-                        <option value="еда">Еда</option>
-                        <option value="транспорт">Транспорт</option>
-                        <option value="развлечения">Развлечения</option>
-                        <option value="другое">Другое</option>
-                    </select>
+    <!-- Форма для добавления расходов -->
+    <section class="expense-form">
+        <form id="expense-form">
+            <label for="category">Категория:</label>
+            <select id="category">
+                <option value="еда">Еда</option>
+                <option value="транспорт">Транспорт</option>
+                <option value="развлечения">Развлечения</option>
+                <option value="другое">Другое</option>
+            </select>
 
-                    <label for="amount">Сумма:</label>
-                    <input type="number" id="amount" placeholder="Введите сумму" required>
+            <label for="amount">Сумма:</label>
+            <input type="number" id="amount" placeholder="Введите сумму" required>
 
-                    <label for="date">Дата:</label>
-                    <input type="date" id="date" required>
+            <label for="date">Дата:</label>
+            <input type="date" id="date" required>
 
-                    <button type="submit">Добавить</button>
-                </form>
-            </section>
+            <button type="submit">Добавить</button>
+        </form>
+    </section>
 
-            <!-- Фильтры по дате -->
-            <section class="filter-section">
-                <h2>Фильтры</h2>
-                <input type="date" id="filter-date">
-                <button id="filter-btn">Применить фильтр</button>
-            </section>
+    <!-- Фильтры -->
+    <section class="filter-section">
+        <!-- Контейнер для фильтрации по дате -->
+        <div class="filter-date-container">
+            <input type="date" id="filter-date">
+            <button id="filter-btn">Применить фильтр</button>
+        </div>
+        <!-- Контейнер для группировки по категориям -->
+        <div class="filter-group-container">
+            <button id="group-btn">Группировать по категориям</button>
+        </div>
+    </section>
 
-            <!-- Группировка по категориям -->
-            <section class="grouping-section">
-                <h2>Группировка по категориям</h2>
-                <button id="group-btn">Показать группировку</button>
-                <ul id="grouped-expenses"></ul>
-            </section>
-        </aside>
+    <!-- Список расходов -->
+    <section class="expense-list">
+        <table>
+            <thead>
+            <tr>
+                <th>Категория</th>
+                <th>Сумма</th>
+                <th>Дата</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody id="expense-table"></tbody>
+        </table>
+    </section>
 
-        <!-- Правая часть: Список расходов и отчеты -->
-        <main class="right-panel">
-            <!-- Список расходов -->
-            <section class="expense-list">
-                <h2>Список расходов</h2>
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Категория</th>
-                        <th>Сумма</th>
-                        <th>Дата</th>
-                        <th>Удалить</th>
-                    </tr>
-                    </thead>
-                    <tbody id="expense-table"></tbody>
-                </table>
-            </section>
+    <!-- Итоги -->
+    <section class="summary">
+        <h2>Отчеты</h2>
+        <p>Общие затраты за все время: <span id="total-all-time">0</span> руб.</p>
+        <p>Общие затраты за год: <span id="year-expense">0</span> руб.</p>
+        <p>Средние затраты в день: <span id="average-expense">0</span> руб.</p>
+        <p>Затраты за неделю: <span id="weekly-expense">0</span> руб.</p>
+        <p>Затраты за месяц: <span id="monthly-expense">0</span> руб.</p>
+    </section>
 
-            <!-- Отчеты -->
-            <section class="summary">
-                <h2>Отчеты</h2>
-                <p>Общие затраты: <span id="total-expense">0</span> руб.</p>
-                <p>Средние затраты в день: <span id="average-expense">0</span> руб.</p>
-                <p>Средние затраты в месяц: <span id="monthly-expense">0</span> руб.</p>
-                <p>Средние затраты в год: <span id="yearly-expense">0</span> руб.</p>
-            </section>
-        </main>
-    </div>
+    <!-- Новый контейнер для группированных расходов -->
+    <section class="grouped-expenses">
+        <h3>Группировка по категориям</h3>
+        <div id="grouped-expenses"></div> <!-- Здесь будут отображаться сгруппированные расходы -->
+    </section>
 </div>
 <script type="module" src="/dist/main.js" defer></script>
 </body>
