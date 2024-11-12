@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор расходов</title>
+    <link rel="stylesheet" href="/src/style.css"/>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Калькулятор расходов</h1>
+    </header>
+
+    <div class="content">
+        <!-- Левая часть: Форма и фильтры -->
+        <aside class="left-panel">
+            <!-- Форма для добавления расходов -->
+            <section class="expense-form">
+                <form id="expense-form">
+                    <h2>Добавить расход</h2>
+                    <label for="category">Категория:</label>
+                    <select id="category">
+                        <option value="еда">Еда</option>
+                        <option value="транспорт">Транспорт</option>
+                        <option value="развлечения">Развлечения</option>
+                        <option value="другое">Другое</option>
+                    </select>
+
+                    <label for="amount">Сумма:</label>
+                    <input type="number" id="amount" placeholder="Введите сумму" required>
+
+                    <label for="date">Дата:</label>
+                    <input type="date" id="date" required>
+
+                    <button type="submit">Добавить</button>
+                </form>
+            </section>
+
+            <!-- Фильтры по дате -->
+            <section class="filter-section">
+                <h2>Фильтры</h2>
+                <input type="date" id="filter-date">
+                <button id="filter-btn">Применить фильтр</button>
+            </section>
+
+            <!-- Группировка по категориям -->
+            <section class="grouping-section">
+                <h2>Группировка по категориям</h2>
+                <button id="group-btn">Показать группировку</button>
+                <ul id="grouped-expenses"></ul>
+            </section>
+        </aside>
+
+        <!-- Правая часть: Список расходов и отчеты -->
+        <main class="right-panel">
+            <!-- Список расходов -->
+            <section class="expense-list">
+                <h2>Список расходов</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Категория</th>
+                        <th>Сумма</th>
+                        <th>Дата</th>
+                        <th>Удалить</th>
+                    </tr>
+                    </thead>
+                    <tbody id="expense-table"></tbody>
+                </table>
+            </section>
+
+            <!-- Отчеты -->
+            <section class="summary">
+                <h2>Отчеты</h2>
+                <p>Общие затраты: <span id="total-expense">0</span> руб.</p>
+                <p>Средние затраты в день: <span id="average-expense">0</span> руб.</p>
+                <p>Средние затраты в месяц: <span id="monthly-expense">0</span> руб.</p>
+                <p>Средние затраты в год: <span id="yearly-expense">0</span> руб.</p>
+            </section>
+        </main>
+    </div>
+</div>
+<script type="module" src="/dist/main.js" defer></script>
+</body>
+</html>

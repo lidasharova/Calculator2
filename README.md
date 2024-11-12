@@ -41,7 +41,7 @@ https://github.com/lidasharova/Calculator2.git
 ```
 3) Перейдите в директорию сохранённого проекта
 ```bash
-cd calculator2
+cd Calculator2
 ```
 4) Скомпилируйте файлы ts в js
 ```bash
