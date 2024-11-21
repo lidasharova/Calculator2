@@ -32,21 +32,13 @@ resetFilterBtn.addEventListener('click', () => {
 const groupBtn = document.getElementById('group-btn')!;
 groupBtn.addEventListener('click', () => {
     const grouped = manager.groupByCategory();
-    const groupedContainer = document.getElementById('grouped-expenses')!;
-    groupedContainer.innerHTML = '';
+    const groupedContainer = document.getElementById('grouped-expenses');
 
-    grouped.forEach((summary, category) => {
-        const categoryBlock = `
-            <div>
-                <h4>${category}</h4>
-                <p>Общие затраты: ${summary.total} руб.</p>
-                <p>Средние за день: ${summary.dailyAvg} руб.</p>
-                <p>Средние за неделю: ${summary.weeklyAvg} руб.</p>
-                <p>Средние за месяц: ${summary.monthlyAvg} руб.</p>
-                <p>Средние за год: ${summary.yearlyAvg} руб.</p>
-            </div>`;
-        groupedContainer.insertAdjacentHTML('beforeend', categoryBlock);
-    });
+    if (groupedContainer) {
+        manager.renderGroupedExpenses (groupedContainer, grouped)
+    }
 });
+
+
 
 manager.loadExpenses() //загрузка и рендеринг из LS

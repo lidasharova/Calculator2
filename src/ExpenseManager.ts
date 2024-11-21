@@ -17,13 +17,39 @@ export class ExpenseManager implements IExpenseManager {
         localStorage.setItem('expenses', JSON.stringify(this.expenses));
     }
 
-    // Метод для загрузки расходов из localStorage
-    loadExpenses(): void {
-        const savedExpenses = localStorage.getItem('expenses');
-        if (savedExpenses) {
-            this.expenses = JSON.parse(savedExpenses);
+    // загрузка данных из LS
+     loadExpenses(): void {
+        try {
+            const savedExpenses = localStorage.getItem('expenses');
+            if (savedExpenses) {
+                const parsedExpenses = JSON.parse(savedExpenses);
+                // Проверяем, что это массив и каждый элемент имеет нужную структуру
+                if (Array.isArray(parsedExpenses) && this.validateExpenses(parsedExpenses)) {
+                    this.expenses = parsedExpenses;
+                } else {
+                    console.log('Некорректные данные в localStorage.');
+                    this.expenses = []; // значение по умолчанию
+                }
+            } else {
+                this.expenses = []; // Если данных нет, устанавливаем значение по умолчанию
+            }
+        } catch {
+            console.log('Не удалось загрузить данные из localStorage');
+            this.expenses = []; // Устанавливаем значение по умолчанию в случае ошибки
         }
         this.update(); // рендерим интерфейс с текущими расходами
+    }
+
+    // проверка структуры каждого объекта в массиве данных для защиты от порчи
+    private validateExpenses(expenses: any[]): boolean {
+        return expenses.every(expense =>
+            typeof expense === 'object' &&
+            expense !== null &&
+            typeof expense.category === 'string' &&
+            typeof expense.amount === 'number' &&
+            typeof expense.date === 'string' &&
+            !isNaN(Date.parse(expense.date))
+        );
     }
 
     // фильтрация по дате
@@ -37,7 +63,7 @@ export class ExpenseManager implements IExpenseManager {
         this.update();
     }
 
-    // Метод группировки расходов по категориям
+    // группируем расходы по категориям
     groupByCategory(): Map<Category, ExpenseSummary> {
         const groupedMap = new Map<Category, ExpenseSummary>();
 
@@ -45,13 +71,12 @@ export class ExpenseManager implements IExpenseManager {
         this.expenses.forEach(expense => {
             const category = expense.category;
             const summary = groupedMap.get(category) || {
-                total: 0,
-                count: 0,
-                expenses: [],
+                total: 0, // общая сумма
+                expenses: [], // расходы в категории
             };
 
-            summary.total += expense.amount; // Обновляем общую сумму по категории
-            summary.expenses.push(expense); //Добавляем текущий расход в массив
+            summary.total += expense.amount; // обновляем общую сумму по категории
+            summary.expenses.push(expense); //добавляем текущий расход в массив
             groupedMap.set(category, summary);
         });
         this.groupedExpenses = groupedMap; // Сохраняем сгруппированные расходы
@@ -63,72 +88,80 @@ export class ExpenseManager implements IExpenseManager {
         return this.groupedExpenses;
     }
 
-    // Отрисовка сгруппированных расходов по категориям
-    renderGroupedExpenses(): void {
-        const groupedContainer = document.getElementById('grouped-expenses')!;
-        groupedContainer.innerHTML = ''; // Очищаем контейнер перед рендерингом
-
-        if (!this.groupedExpenses) return; // Если группировка еще не выполнена, выходим
-
-        const groupedMap = this.groupedExpenses;
-
-        // Проходим по каждой категории и создаем блок с данными
-        groupedMap.forEach((summary, category) => {
-            const categoryBlock = `
-            <div class="category-block">
-                <h4>${category}</h4>
-                <!-- Таблица с расходами по этой категории -->
-                <table class="expense-table">
-                    <thead>
-                        <tr>
-                            <th>Категория</th>
-                            <th>Сумма</th>
-                            <th>Дата</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${summary.expenses.map(exp => `
+    // рендеринг сгруппированных расходов
+    renderGroupedExpenses(container: HTMLElement , grouped: Map<Category, ExpenseSummary>) {
+        container.innerHTML = ''; // очистка контейнера
+        grouped.forEach((summary, category) => {
+            // шапка группировки
+            let categoryBlock = `
+                <div class="category-group">
+                    <h4>${category}</h4>
+                    <table class="expenses-table">
+                        <thead>
                             <tr>
-                                <td>${exp.category}</td>
-                                <td>${exp.amount.toFixed(2)} руб.</td>
-                                <td>${exp.date}</td>
+                                <th>Категория</th>
+                                <th>Сумма</th>
+                                <th>Дата</th>
                             </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-                <!--------------->
-                <p>Общие затраты по категории за все время: ${summary.total.toFixed(2)} руб.</p>
-            </div>`;
+                        </thead>
+                        <tbody>
+                        `;
 
-            // Добавляем блок с категорией и ее отчетами в контейнер
-            groupedContainer.insertAdjacentHTML('beforeend', categoryBlock);
+            // список расходов
+            summary.expenses.forEach(expense => {
+                categoryBlock += `
+                    <tr>
+                        <td>${expense.category}</td>
+                        <td>${expense.amount} руб.</td>
+                        <td>${expense.date}</td>
+                    </tr>
+                `;
+            });
+
+            // итоговая сумма по категориям
+            categoryBlock += `
+                        </tbody>
+                    </table>
+                    <div class="summary">
+                        <p>Общие затраты: ${summary.total} руб.</p>
+                    </div>
+                </div>
+            `;
+
+            // Добавляем блок категории в контейнер
+            container.insertAdjacentHTML('beforeend', categoryBlock);
         });
     }
 
     // Общая сумма расходов
     calculateTotal(): number {
-        return this.expenses.reduce((total, expense) => total + expense.amount, 0);
+        const total = this.expenses.reduce((total, expense) => total + expense.amount, 0);
+        return parseFloat(total.toFixed(2)); // Округляем до 2 знаков после запятой
     }
 
     // Средние расходы за день
     calculateAverage(expenses: Expense[] = this.expenses): number {
         const uniqueDates = new Set(expenses.map(exp => exp.date));
-        return uniqueDates.size ? this.calculateTotal() / uniqueDates.size : 0;
+        const average = uniqueDates.size ? this.calculateTotal() / uniqueDates.size : 0;
+        return parseFloat(average.toFixed(2));
     }
 
     // Средние расходы за неделю
     calculateWeekly(expenses: Expense[] = this.expenses): number {
-        return this.calculateTotal() / 4; // Упрощенно: считаем, что месяц = 4 недели
+        const weekly = this.calculateTotal() / 4;
+        return parseFloat(weekly.toFixed(2));
     }
 
     // Средние расходы за месяц
     calculateMonthly(expenses: Expense[] = this.expenses): number {
-        return this.calculateTotal() / 12;
+        const monthly = this.calculateTotal() / 12;
+        return parseFloat(monthly.toFixed(2));
     }
 
     // Средние расходы за год
     calculateYearly(expenses: Expense[] = this.expenses): number {
-        return this.calculateTotal();
+        const yearly = this.calculateTotal();
+        return parseFloat(yearly.toFixed(2));
     }
 
     // Обновление итогов на интерфейсе
@@ -196,7 +229,7 @@ export class ExpenseManager implements IExpenseManager {
         });
     }
 
-    // Обработчик удаления
+    // обработчик удаления
     private handleDelete(event: Event): void {
         const target = event.target as HTMLButtonElement;
         const index = target.dataset.index;

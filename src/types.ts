@@ -19,9 +19,9 @@ export interface IExpenseManager {
     calculateAverage(): number;
     renderExpenses(expenses: Expense[]): void;
     updateSummary(): void; // расчет
-    update(): void; // отрисовка
-    renderGroupedExpenses(): void; //отрисовка сгруппированных трат по группам
-    loadExpenses(): void;
+    update(): void; // рендеринг
+    renderGroupedExpenses(container: HTMLElement, grouped: Map<Category, ExpenseSummary>): void; // отрисовка сгруппированных трат по группам
+    loadExpenses(): void; // загрузка данных
 }
 
 export interface ExpenseSummary {
@@ -30,6 +30,5 @@ export interface ExpenseSummary {
     weeklyAvg?: number; // Среднее за неделю
     monthlyAvg?: number; // Среднее за месяц
     yearlyAvg?: number; // Среднее за год
-    count: number; // Количество расходов в категории
     expenses: Expense[]; // Массив расходов для категории
 }
